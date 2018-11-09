@@ -5,7 +5,9 @@ import seedMutations from "./seed-mutations";
 import fetch from "node-fetch";
 import { HttpLink } from "apollo-link-http";
 import { InMemoryCache } from "apollo-cache-inmemory";
+import Bluebird from 'bluebird'
 
+fetch.Promise = Bluebird
 dotenv.config();
 
 const client = new ApolloClient({
