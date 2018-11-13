@@ -8,7 +8,6 @@ import xssMiddleware from './xssMiddleware';
 import permissionsMiddleware from './permissionsMiddleware';
 
 export default schema => [
-  permissionsMiddleware.generate(schema),
   passwordMiddleware,
   dateTimeMiddleware,
   sluggifyMiddleware,
