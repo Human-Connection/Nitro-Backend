@@ -24,7 +24,7 @@
     "selector": {
       "io.kompose.service": "backend"
     },
-    "clusterIP": "10.110.129.92",
+    "clusterIP": "10.245.0.1",
     "type": "LoadBalancer",
     "sessionAffinity": "None",
     "externalTrafficPolicy": "Cluster"

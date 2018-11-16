@@ -32,7 +32,7 @@
     "selector": {
       "io.kompose.service": "neo4j"
     },
-    "clusterIP": "10.108.175.122",
+    "clusterIP": "10.245.0.5",
     "type": "LoadBalancer",
     "sessionAffinity": "None",
     "externalTrafficPolicy": "Cluster"
