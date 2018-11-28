@@ -1,4 +1,4 @@
-FROM node:10-alpine
+FROM node:11.2-alpine
 LABEL Description="Server part of the social network Human Connection" Vendor="Human-Connection gGmbH" Version="0.0.1" Maintainer="Human-Connection gGmbH (developer@human-connection.org)"
 
 # expose the app port
