@@ -19,7 +19,7 @@
     "@babel/register": "^7.0.0",
     "apollo-boost": "^0.1.10",
     "apollo-cache-inmemory": "^1.2.5",
-    "apollo-client": "^2.3.2",
+    "apollo-client": "^2.4.7",
     "apollo-link-http": "^1.5.4",
     "apollo-server": "^2.0.4",
     "bcryptjs": "^2.4.3",
