@@ -1,4 +1,4 @@
-# Human-Connection - NITRO API
+# Human-Connection - NITRO Backend
 
 > This Prototype tries to resolve the biggest hurdle of connecting
 > our services together. This is not possible in a sane way using
@@ -105,9 +105,9 @@ Optionally you can seed the GraphQL service by executing mutations that
 will write sample data to the database:
 
 ```bash
-yarn seedDb
+yarn db:seed
 # -or-
-npm run seedDb
+npm run db:seed
 ```
 
 ## Todo`s
@@ -115,7 +115,7 @@ npm run seedDb
 - [x] add jwt authentication
 - [ ] get directives working correctly (@toLower, @auth, @role, etc.)
 - [ ] check if search is working
-- [ ] check if sorting is working
+- [x] check if sorting is working
 - [x] check if pagination is working
 - [ ] check if upload is working (using graphql-yoga?)
 - [x] evaluate middleware 
