@@ -19,7 +19,7 @@
   "author": "Human Connection gGmbH",
   "license": "MIT",
   "dependencies": {
-    "@babel/cli": "^7.1.5",
+    "@babel/cli": "^7.2.0",
     "@babel/core": "^7.1.6",
     "@babel/node": "^7.0.0",
     "@babel/preset-env": "^7.1.6",
