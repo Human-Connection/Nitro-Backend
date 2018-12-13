@@ -33,7 +33,7 @@
     "cross-env": "~5.2.0",
     "date-fns": "^2.0.0-alpha.26",
     "dotenv": "~6.2.0",
-    "graphql": "~0.13.0",
+    "graphql": "~14.0.2",
     "graphql-custom-directives": "~0.2.14",
     "graphql-iso-date": "~3.6.1",
     "graphql-middleware": "2.0.2",
