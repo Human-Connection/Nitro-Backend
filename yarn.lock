@@ -3026,12 +3026,12 @@ graphql-middleware@1.7.7:
   dependencies:
     graphql-tools "^4.0.1"
 
-graphql-middleware@~1.7.8:
-  version "1.7.8"
-  resolved "https://registry.yarnpkg.com/graphql-middleware/-/graphql-middleware-1.7.8.tgz#617940d3cd462e9553e582d2b6ce86cb0e95a3dd"
-  integrity sha512-FNl427I9fCZ9ZwuywPHPbpVJCgDiMS+7dbtaEZu7zJiMP8il2+2T0KRKCiXkfLDKefiGkZnl4qVIFbncCDaduA==
+graphql-middleware@~2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/graphql-middleware/-/graphql-middleware-2.0.2.tgz#99a3b0ff3f3e3fa66c6ddc8608e6e4eb1d2bb99c"
+  integrity sha512-qDmot+DU2XTRnWS3SJGRUUPQ9jhma9AtUR1GtWnqq3JkzoqzT/dprxS7eszIj0c1gD5UrySpm4yM1fNbQcazwA==
   dependencies:
-    graphql-tools "^4.0.2"
+    graphql-tools "^4.0.3"
 
 graphql-playground-html@1.6.4:
   version "1.6.4"
@@ -3088,7 +3088,7 @@ graphql-tag@^2.9.2, graphql-tag@~2.10.0:
   resolved "https://registry.yarnpkg.com/graphql-tag/-/graphql-tag-2.10.0.tgz#87da024be863e357551b2b8700e496ee2d4353ae"
   integrity sha512-9FD6cw976TLLf9WYIUPCaaTpniawIjHWZSwIRZSjrfufJamcXbVVYfN2TWvJYbw0Xf2JjYbl1/f2+wDnBVw3/w==
 
-graphql-tools@^4.0.0, graphql-tools@^4.0.1, graphql-tools@^4.0.2:
+graphql-tools@^4.0.0, graphql-tools@^4.0.1, graphql-tools@^4.0.3:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/graphql-tools/-/graphql-tools-4.0.3.tgz#23b5cb52c519212b1b2e4630a361464396ad264b"
   integrity sha512-NNZM0WSnVLX1zIMUxu7SjzLZ4prCp15N5L2T2ro02OVyydZ0fuCnZYRnx/yK9xjGWbZA0Q58yEO//Bv/psJWrg==
@@ -3136,19 +3136,12 @@ graphql-yoga@~1.16.7:
     graphql-tools "^4.0.0"
     subscriptions-transport-ws "^0.9.8"
 
-"graphql@^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0", graphql@^14.0.2:
+"graphql@^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0", graphql@^14.0.2, graphql@~14.0.2:
   version "14.0.2"
   resolved "https://registry.yarnpkg.com/graphql/-/graphql-14.0.2.tgz#7dded337a4c3fd2d075692323384034b357f5650"
   integrity sha512-gUC4YYsaiSJT1h40krG3J+USGlwhzNTXSb4IOZljn9ag5Tj+RkoXrWp+Kh7WyE3t1NCfab5kzCuxBIvOMERMXw==
   dependencies:
     iterall "^1.2.2"
-
-graphql@~0.13.0:
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/graphql/-/graphql-0.13.2.tgz#4c740ae3c222823e7004096f832e7b93b2108270"
-  integrity sha512-QZ5BL8ZO/B20VA8APauGBg3GyEgZ19eduvpLWoq5x7gMmWnHoy8rlQWPLmWgFvo1yNgjSEFMesmS4R6pPr7xog==
-  dependencies:
-    iterall "^1.2.1"
 
 growl@1.10.5:
   version "1.10.5"
