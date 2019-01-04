@@ -52,12 +52,8 @@ const createServer = (options) => {
       return payload
     },
     schema: schema,
-<<<<<<< HEAD
-    tracing: debug,
-=======
     tracing: true,
     debug: process.env.NODE_ENV !== 'production',
->>>>>>> Improved locale handling and moved MAPBOX_TOKEN to env
     middlewares: middleware(schema),
     mocks: (process.env.MOCK === 'true') ? mocks : false
   }
