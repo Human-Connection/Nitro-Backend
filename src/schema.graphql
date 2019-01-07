@@ -13,9 +13,14 @@ type LoggedInUser {
   avatar:String!
   email: String!
   role: String!
+<<<<<<< HEAD
   disabled: Boolean!
   deleted: Boolean!
   verified: Boolean!
+=======
+  locationName: String
+  about: String
+>>>>>>> Fixed login and schema
   token: String!
 }
 
