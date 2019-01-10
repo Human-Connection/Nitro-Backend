@@ -2,6 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 import bcrypt from 'bcryptjs'
+import uuidv4 from 'uuid/v4'
 import generateJwt from './jwt/generateToken'
 import { fixUrl } from './middleware/fixImageUrlsMiddleware'
 import { AuthenticationError } from 'apollo-server'
@@ -81,28 +82,50 @@ export const resolvers = {
     // usersBySubstring: neo4jgraphql
   },
   Mutation: {
-    signup: async (parent, { email, password }, { req }) => {
-      // if (data[email]) {
-      //   throw new Error('Another User with same email exists.')
-      // }
-      // data[email] = {
-      //   password: await bcrypt.hashSync(password, 10),
-      // }
-
-      return true
+    Signup: async (parent, args, { driver }) => {
+      const session = driver.session()
+      const userExists = await session.run(
+        'MATCH (user:User {email: $userEmail}) ' +
+        'RETURN user {.id, .name, .email} as user LIMIT 1', { userEmail: args.email })
+      if (userExists.records.length === 0) {
+        const user = {
+          id: uuidv4(),
+          name: args.name,
+          email: args.email,
+          slug: args.slug,
+          password: args.password,
+          role: 'user',
+          avatar: 'https://www.w3schools.com/howto/img_avatar.png',
+          deleted: false,
+          disabled: false,
+          verified: false,
+          createdAt: new Date().toString()
+        }
+        return session.run(
+          'CREATE (user:User $user) ' +
+          'RETURN user',
+          { 'user': user })
+          .then((result) => {
+            session.close()
+            const LoggedUser = result.records[0]._fields[0].properties
+            delete LoggedUser.password
+            LoggedUser.avatar = fixUrl(LoggedUser.avatar)
+            return Object.assign(LoggedUser, {
+              token: generateJwt(LoggedUser)
+            })
+          })
+      }
+      session.close()
+      throw new Error('User already exists')
     },
-    login: async (parent, { email, password }, { driver, req, user }) => {
-      // if (user && user.id) {
-      //   throw new Error('Already logged in.')
-      // }
+    Login: async (parent, { email, password }, { driver, req, user }) => {
       const session = driver.session()
       return session.run(
         'MATCH (user:User {email: $userEmail}) ' +
-        'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1', { userEmail: email })
+        'RETURN user {.id, .slug, .name, .avatar, .email, .verified, .password, .role} as user LIMIT 1', { userEmail: email })
         .then(async (result) => {
           session.close()
           const [currentUser] = await result.records.map(function (record) {
-            console.log(record.get('user'))
             return record.get('user')
           })
           if (currentUser && await bcrypt.compareSync(password, currentUser.password)) {

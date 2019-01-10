@@ -9,7 +9,7 @@ export default {
       const result = await resolve(root, args, context, info)
       return result
     },
-    CreateUser: async (resolve, root, args, context, info) => {
+    Signup: async (resolve, root, args, context, info) => {
       if (!args.slug) {
         args.slug = slug(args.name, {
           lower: true

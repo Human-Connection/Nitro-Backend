@@ -3,8 +3,8 @@ type Query {
   statistics: Statistics!
 }
 type Mutation {
-  login(email: String!, password: String!): LoggedInUser
-  signup(email: String!, password: String!): Boolean!
+  Login(email: String!, password: String!): LoggedInUser
+  Signup(name: String!, email: String!, password: String!): LoggedInUser
 }
 type LoggedInUser {
   id: ID!
@@ -13,6 +13,7 @@ type LoggedInUser {
   avatar:String!
   email: String!
   role: String!
+  verified: Boolean!
   token: String!
 }
 
@@ -56,6 +57,7 @@ type User {
   role: UserGroupEnum
   createdAt: String
   updatedAt: String
+  verified: Boolean
 
   friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
   friendsCount: Int! @cypher(statement: "MATCH (this)<-[:FRIENDS]->(r:User) RETURN COUNT(r)")
