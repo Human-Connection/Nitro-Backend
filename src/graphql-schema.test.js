@@ -19,12 +19,12 @@ afterEach(async () => {
   await app.close()
 })
 
-describe.only('Login', () => {
+describe.only('login', () => {
   const mutation = (params) => {
     const { email, password } = params
     return `
       mutation {
-        Login(email:"${email}", password:"${password}"){
+        login(email:"${email}", password:"${password}"){
           token
         }
       }`
