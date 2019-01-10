@@ -99,7 +99,7 @@ export const resolvers = {
           deleted: false,
           disabled: false,
           verified: false,
-          createdAt: new Date().toString()
+          createdAt: args.createdAt
         }
         return session.run(
           'CREATE (user:User $user) ' +
