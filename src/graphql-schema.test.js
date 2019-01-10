@@ -19,12 +19,12 @@ afterEach(async () => {
   await app.close()
 })
 
-describe('login', () => {
+describe('Login', () => {
   const mutation = (params) => {
     const { email, password } = params
     return `
       mutation {
-        login(email:"${email}", password:"${password}"){
+        Login(email:"${email}", password:"${password}"){
           token
         }
       }`
@@ -46,7 +46,7 @@ describe('login', () => {
       describe('with valid email/password combination', () => {
         it('responds with a JWT token', async () => {
           const data = await request(getHost(), mutation({ email: 'test@example.org', password: '1234' }))
-          const { token } = data.login
+          const { token } = data.Login
           jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
             expect(data.email).toEqual('test@example.org')
             expect(err).toBeNull()
