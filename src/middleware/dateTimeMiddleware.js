@@ -2,7 +2,7 @@ import format from 'date-fns/format'
 
 export default {
   Mutation: {
-    Signup: async (resolve, root, args, context, info) => {
+    CreateUser: async (resolve, root, args, context, info) => {
       args.createdAt = (new Date()).toISOString()
       args.disabled = false
       args.deleted = false

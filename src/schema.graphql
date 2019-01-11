@@ -4,7 +4,7 @@ type Query {
 }
 type Mutation {
   Login(email: String!, password: String!): LoggedInUser
-  Signup(name: String!, email: String!, password: String!): LoggedInUser
+  CreateUser(name: String!, email: String!, password: String!): LoggedInUser
 }
 type LoggedInUser {
   id: ID!
@@ -13,6 +13,8 @@ type LoggedInUser {
   avatar:String!
   email: String!
   role: String!
+  disabled: Boolean!
+  deleted: Boolean!
   verified: Boolean!
   token: String!
 }
