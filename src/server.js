@@ -52,13 +52,18 @@ const createServer = (options) => {
       return payload
     },
     schema: schema,
+<<<<<<< HEAD
     tracing: debug,
+=======
+    tracing: true,
+    debug: process.env.NODE_ENV !== 'production',
+>>>>>>> Improved locale handling and moved MAPBOX_TOKEN to env
     middlewares: middleware(schema),
     mocks: (process.env.MOCK === 'true') ? mocks : false
   }
   const server = new GraphQLServer(Object.assign({}, defaults, options))
 
-  passport.use('jwt', jwtStrategy())
+  passport.use('jwt', jwtStrategy(driver))
   server.express.use(passport.initialize())
 
   server.express.post('/graphql', passport.authenticate(['jwt'], { session: false }))
