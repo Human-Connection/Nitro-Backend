@@ -42,7 +42,7 @@
     "graphql-custom-directives": "~0.2.14",
     "graphql-iso-date": "~3.6.1",
     "graphql-middleware": "~1.7.8",
-    "graphql-shield": "~4.1.2",
+    "graphql-shield": "~5.1.0",
     "graphql-tag": "~2.10.0",
     "graphql-yoga": "~1.16.7",
     "jsonwebtoken": "~8.4.0",
