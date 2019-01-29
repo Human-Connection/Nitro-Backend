@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "apollo-cache-inmemory": "~1.4.0",
-    "apollo-client": "~2.4.9",
+    "apollo-client": "~2.4.12",
     "apollo-link-http": "~1.5.9",
     "apollo-server": "~2.3.1",
     "bcryptjs": "~2.4.3",
