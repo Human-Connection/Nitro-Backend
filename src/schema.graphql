@@ -5,6 +5,7 @@ type Query {
 type Mutation {
   login(email: String!, password: String!): LoggedInUser
   signup(email: String!, password: String!): Boolean!
+  report(resource: Resource!, description: String): Report
 }
 type LoggedInUser {
   id: ID!
@@ -13,6 +14,8 @@ type LoggedInUser {
   avatar:String!
   email: String!
   role: String!
+  locationName: String
+  about: String
   token: String!
 }
 
@@ -32,6 +35,17 @@ scalar Date
 scalar Time
 scalar DateTime
 
+input Resource {
+  id: ID!,
+  type: ResourceEnum!
+}
+
+enum ResourceEnum {
+  contribution
+  comment
+  user
+}
+
 enum VisibilityEnum {
   public
   friends
@@ -44,6 +58,23 @@ enum UserGroupEnum {
   user
 }
 
+type Location {
+  id: ID!
+  name: String!
+  nameEN: String
+  nameDE: String
+  nameFR: String
+  nameNL: String
+  nameIT: String
+  nameES: String
+  namePT: String
+  namePL: String
+  type: String!
+  lat: Float
+  lng: Float
+  parent: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+}
+
 type User {
   id: ID!
   name: String
@@ -54,6 +85,11 @@ type User {
   deleted: Boolean
   disabled: Boolean
   role: UserGroupEnum
+
+  location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+  locationName: String
+  about: String
+
   createdAt: String
   updatedAt: String
 
@@ -136,6 +172,17 @@ type Comment {
   updatedAt: String
   deleted: Boolean
   disabled: Boolean
+}
+
+type Report {
+  id: ID!
+  reporter: User @relation(name: "REPORTED", direction: "IN")
+  description: String
+  type: ResourceEnum!
+  createdAt: String
+  comment: Comment @relation(name: "REPORTED", direction: "OUT")
+  contribution: Post @relation(name: "REPORTED", direction: "OUT")
+  user: User @relation(name: "REPORTED", direction: "OUT")
 }
 
 type Category {

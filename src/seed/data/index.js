@@ -1,5 +1,5 @@
 import gql from 'graphql-tag'
-import helper from '../seed-helpers'
+import asyncForEach from '../../helpers/asyncForEach'
 
 const seed = {
   Badge: require('./badges.js').default,
@@ -16,13 +16,15 @@ const seed = {
   Post: require('./posts.js').default,
   Comment: require('./comments.js').default,
   UserShouts: require('./users-shouts.js').default
+
+  // Reports: require('./reports.js').default
 }
 
 let data = {}
 
 export default async function (client) {
   // iterate through seeds
-  await helper.asyncForEach(Object.keys(seed), async key => {
+  await asyncForEach(Object.keys(seed), async key => {
     const mutations = seed[key]
     try {
       const res = await client
@@ -33,8 +35,9 @@ export default async function (client) {
     } catch (err) {
       /* eslint-disable-next-line no-console */
       console.error(err)
+      process.exit(1)
     }
   })
   /* eslint-disable-next-line no-console */
-  console.log('Seeded Data', data)
+  console.log('Seeded Data...')
 }

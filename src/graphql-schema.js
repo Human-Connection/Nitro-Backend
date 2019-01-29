@@ -2,9 +2,10 @@
 import fs from 'fs'
 import path from 'path'
 import bcrypt from 'bcryptjs'
-import zipObject from 'lodash/zipObject'
 import generateJwt from './jwt/generateToken'
+import uuid from 'uuid/v4'
 import { fixUrl } from './middleware/fixImageUrlsMiddleware'
+import { AuthenticationError } from 'apollo-server'
 
 export const typeDefs =
   fs.readFileSync(process.env.GRAPHQL_SCHEMA || path.join(__dirname, 'schema.graphql'))
@@ -95,32 +96,71 @@ export const resolvers = {
       // if (user && user.id) {
       //   throw new Error('Already logged in.')
       // }
-
       const session = driver.session()
-      const res = await session.run('MATCH (u:User {email: "' + email + '"}) RETURN u.id, u.slug, u.name, u.avatar, u.email, u.password, u.role LIMIT 1')
-      let u = res.records[0]._fields ? zipObject([
-        'id',
-        'slug',
-        'name',
-        'avatar',
-        'email',
-        'password',
-        'role'
-      ], res.records[0]._fields) : null
-      if (u) {
-        if (await bcrypt.compareSync(password, u.password)) {
-          delete u.password
-          u.avatar = fixUrl(u.avatar)
-          return Object.assign(u, {
-            token: generateJwt(u)
+      return session.run(
+        'MATCH (user:User {email: $userEmail}) ' +
+        'RETURN user {.id, .slug, .name, .avatar, .locationName, .about, .email, .password, .role} as user LIMIT 1', {
+          userEmail: email
+        })
+        .then(async (result) => {
+          session.close()
+          const [currentUser] = await result.records.map(function (record) {
+            return record.get('user')
           })
+
+          if (currentUser && await bcrypt.compareSync(password, currentUser.password)) {
+            delete currentUser.password
+            currentUser.avatar = fixUrl(currentUser.avatar)
+            return Object.assign(currentUser, {
+              token: generateJwt(currentUser)
+            })
+          } else throw new AuthenticationError('Incorrect email address or password.')
+        })
+    },
+    report: async (parent, { resource, description }, { driver, req, user }, resolveInfo) => {
+      const contextId = uuid()
+      const session = driver.session()
+      const data = {
+        id: contextId,
+        type: resource.type,
+        createdAt: (new Date()).toISOString(),
+        description: resource.description
+      }
+      await session.run(
+        'CREATE (r:Report $report) ' +
+        'RETURN r.id, r.type, r.description', {
+          report: data
         }
-        session.close()
-        throw new Error('Incorrect password.')
+      )
+      let contentType
+
+      switch (resource.type) {
+      case 'post':
+      case 'contribution':
+        contentType = 'Post'
+        break
+      case 'comment':
+        contentType = 'Comment'
+        break
+      case 'user':
+        contentType = 'User'
+        break
       }
 
+      await session.run(
+        `MATCH (author:User {id: $userId}), (context:${contentType} {id: $resourceId}), (report:Report {id: $contextId}) ` +
+        'MERGE (report)<-[:REPORTED]-(author) ' +
+        'MERGE (context)<-[:REPORTED]-(report) ' +
+        'RETURN context', {
+          resourceId: resource.id,
+          userId: user.id,
+          contextId: contextId
+        }
+      )
       session.close()
-      throw new Error('No Such User exists.')
+
+      // TODO: output Report compatible object
+      return data
     }
   }
 }
