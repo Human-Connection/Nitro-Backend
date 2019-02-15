@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "description": "GraphQL Backend for Human Connection",
   "main": "src/index.js",
-  "config": {
-    "no_auth": "cross-env GRAPHQL_URI=http://localhost:4001 GRAPHQL_PORT=4001 PERMISSIONS=disabled"
-  },
   "scripts": {
     "build": "babel src/ -d dist/ --copy-files",
     "start": "node dist/",
@@ -20,10 +17,8 @@
     "test:jest": "run-p --race test:before:* 'test:jest:cmd {@}' --",
     "test:jest:debug": "run-p --race test:before:* 'test:jest:cmd:debug {@}' --",
     "test:coverage": "nyc report --reporter=text-lcov > coverage.lcov",
-    "db:script:seed": "wait-on tcp:4001 && babel-node src/seed/seed-db.js",
-    "db:script:reset": "wait-on tcp:4001 && babel-node src/seed/reset-db.js",
-    "db:seed": "$npm_package_config_no_auth run-p --race dev db:script:seed",
-    "db:reset": "$npm_package_config_no_auth run-p --race dev db:script:reset"
+    "db:seed": "babel-node src/seed/seed-db.js",
+    "db:reset": "babel-node src/seed/reset-db.js"
   },
   "author": "Human Connection gGmbH",
   "license": "MIT",
@@ -57,6 +52,7 @@
     "ms": "~2.1.1",
     "neo4j-driver": "~1.7.2",
     "neo4j-graphql-js": "~2.3.1",
+    "neode": "^0.2.13",
     "node-fetch": "~2.3.0",
     "npm-run-all": "~4.1.5",
     "passport": "~0.4.0",

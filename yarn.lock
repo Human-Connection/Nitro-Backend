@@ -2349,6 +2349,11 @@ dotenv@^0.4.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-0.4.0.tgz#f6fb351363c2d92207245c737802c9ab5ae1495a"
   integrity sha1-9vs1E2PC2SIHJFxzeALJq1rhSVo=
 
+dotenv@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-4.0.0.tgz#864ef1379aced55ce6f95debecdce179f7a0cd1d"
+  integrity sha1-hk7xN5rO1Vzm+V3r7NzhefegzR0=
+
 dotenv@~6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-6.2.0.tgz#941c0410535d942c8becf28d3f357dbd9d476064"
@@ -4301,7 +4306,7 @@ jmespath@0.15.0:
   resolved "https://registry.yarnpkg.com/jmespath/-/jmespath-0.15.0.tgz#a3f222a9aae9f966f5d27c796510e28091764217"
   integrity sha1-o/Iiqarp+Wb10nx5ZRDigJF2Qhc=
 
-joi@^13.0.0:
+joi@^13.0.0, joi@^13.7.0:
   version "13.7.0"
   resolved "https://registry.yarnpkg.com/joi/-/joi-13.7.0.tgz#cfd85ebfe67e8a1900432400b4d03bbd93fb879f"
   integrity sha512-xuY5VkHfeOYK3Hdi91ulocfuFopwgbSORmIwzcwHKESQhC7w1kD5jaVSPnqDxS2I8t3RZ9omCKAxNwXN5zG1/Q==
@@ -4916,7 +4921,7 @@ negotiator@0.6.1:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.1.tgz#2b327184e8992101177b28563fb5e7102acd0ca9"
   integrity sha1-KzJxhOiZIQEXeyhWP7XnECrNDKk=
 
-neo4j-driver@^1.7.2, neo4j-driver@~1.7.2:
+neo4j-driver@^1.6.3, neo4j-driver@^1.7.2, neo4j-driver@~1.7.2:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/neo4j-driver/-/neo4j-driver-1.7.2.tgz#c72a6dfa6bd2106b00a42794dc52a82b227b48e0"
   integrity sha512-0IvCFYhcP9hb5JveZk33epbReDKpFTn2u5vAa8zzGG344i6yFqZrBo0mtC114ciP9zFjAtfNOP72mRm8+NV0Fg==
@@ -4933,6 +4938,16 @@ neo4j-graphql-js@~2.3.1:
     graphql "^14.0.2"
     lodash "^4.17.11"
     neo4j-driver "^1.7.2"
+
+neode@^0.2.13:
+  version "0.2.13"
+  resolved "https://registry.yarnpkg.com/neode/-/neode-0.2.13.tgz#6fe1da7d0bc984dd9873a2c20f7e7e3ea046dd00"
+  integrity sha512-9m/M7EdWEH4MIHStBO8VdxCPSVQDJodUvqKVJQNcErsVHZ28ZYzAKnmzgtfFdnwZ6wiEmqGWg/kCit9ACWB3nA==
+  dependencies:
+    dotenv "^4.0.0"
+    joi "^13.7.0"
+    neo4j-driver "^1.6.3"
+    uuid "^3.3.2"
 
 nice-try@^1.0.4:
   version "1.0.5"
