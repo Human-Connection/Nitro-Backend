@@ -6,14 +6,21 @@ import { create } from  './factories'
   }
 
   try {
-    const [peter, fritz, bob] = await Promise.all([
-      create('user', {name: 'Peter Lustig'}),
-      create('user', {name: 'Fritz Fuchs'}),
-      create('user', {name: 'Bob der Baumeister'})
+    const [admin, moderator, user, ...otherUsers] = await Promise.all([
+      create('user', {name: 'Peter Lustig'      , email: 'admin@example.org'}),
+      create('user', {name: 'Bob der Baumeister', email: 'moderator@example.org'}),
+      create('user', {name: 'Jenny Rostock'     , email: 'user@example.org'}),
+      create('user'),
+      create('user')
     ])
-    const post = await create('post')
-    const wrote = await peter.relateTo(post, 'wrote')
-    console.log(wrote)
+    await Promise.all([
+      create('post', {author: admin}),
+      create('post', {author: moderator}),
+      create('post', {author: user}),
+      create('post'),
+      create('post'),
+      create('post')
+    ])
 
     console.log('Successfully seeded the database!')
   } catch(err) {

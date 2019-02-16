@@ -1,12 +1,12 @@
 import neode from '../neode.js'
 import faker from 'faker'
 
-export default async (params) => {
+export default async (params = {}) => {
   const {
     name = faker.name.findName(),
     email = faker.internet.email(),
     avatar = faker.internet.avatar()
-  } = params || {}
+  } = params
 
   return neode.model('user').create({
     name,
