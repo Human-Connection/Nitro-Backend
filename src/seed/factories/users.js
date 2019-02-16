@@ -1,30 +1,19 @@
+import neode from '../neode.js'
 import faker from 'faker'
 
-export default function (params) {
+export default async (params) => {
   const {
     name = faker.name.findName(),
     email = faker.internet.email(),
-    password = '1234',
     avatar = faker.internet.avatar()
-  } = params
+  } = params || {}
 
-  return `
-    mutation {
-      u1: CreateUser(
-        id: "u1",
-        name: "${name}",
-        password: "${password}",
-        email: "${email}",
-        avatar: "${avatar}",
-        role: admin,
-        disabled: false,
-        deleted: false) {
-        id
-        name
-        email
-        avatar
-        role
-      }
-    }
-  `
+  return neode.model('user').create({
+    name,
+    email,
+    avatar,
+    password: '1234',
+    disabled: false,
+    deleted: false
+  })
 }

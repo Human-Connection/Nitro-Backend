@@ -1,30 +1,19 @@
-import { query } from '../graphql-schema'
-import dotenv from 'dotenv'
-import neo4j from '../bootstrap/neo4j'
+import neode from './neode.js'
 
-dotenv.config()
-
-if (process.env.NODE_ENV === 'production') {
-  throw new Error('YOU CAN`T UNSEED IN PRODUCTION MODE')
-}
-
-const driver = neo4j().getDriver()
-const session = driver.session()
-
-const deleteAll = `
-MATCH (n)
-OPTIONAL MATCH (n)-[r]-()
-DELETE n,r
-`
-query(deleteAll, session).then(() => {
-  /* eslint-disable-next-line no-console */
-  console.log('Successfully deleted all nodes and relations!')
-}).catch((err) => {
-  /* eslint-disable-next-line no-console */
-  console.log(`Error occurred deleting the nodes and relations (reset the db)\n\n${err}`)
-}).finally(() => {
-  if (session) {
-    session.close()
+(async () => {
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error(`YOU CAN'T CLEAN THE DATABASE WITH NODE_ENV=${process.env.NODE_ENV}`)
   }
-  process.exit(0)
-})
+
+  try {
+    const deleteAll = 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;'
+    const response = await neode.cypher(deleteAll)
+    /* eslint-disable-next-line no-console */
+    console.log('Successfully deleted all nodes and relations!')
+  } catch(err) {
+    /* eslint-disable-next-line no-console */
+    console.log(`Error occurred deleting the nodes and relations (reset the db)\n\n${err}`)
+  } finally {
+    process.exit(0)
+  }
+})()
