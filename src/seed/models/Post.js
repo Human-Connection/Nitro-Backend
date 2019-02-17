@@ -5,6 +5,7 @@ module.exports = {
     required: true
   },
   title: 'string',
+  slug: 'string',
   content: 'string',
   image: 'string',
   visibility: 'string',

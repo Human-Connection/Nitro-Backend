@@ -1,20 +1,30 @@
 import neode from '../neode.js'
 import createUser from './users.js'
 import faker from 'faker'
+import slugify from 'slug'
 
 export default function (params = {}) {
   const {
     title = faker.lorem.sentence(),
-    content = Array.from({ length: 10 }, () => faker.lorem.sentence()).join(' ')
+    content = Array.from({ length: 10 }, () => faker.lorem.sentence()).join(' '),
+    image = 'https://picsum.photos/1280/1024?image=424',
+    visibility = 'public',
+    disabled = false,
+    deleted = false
   } = params
 
-  return neode.model('post').create({
+  const slug = slugify(title, {
+    lower: true
+  })
+
+  return neode.model('Post').create({
     title,
+    slug,
     content,
-    image: 'https://picsum.photos/1280/1024?image=424',
-    visibility: 'public',
-    disabled: false,
-    deleted: false
+    image,
+    visibility,
+    disabled,
+    deleted
   }).then((post) => {
     // ensure each post has an author
     return new Promise(function(resolve, reject) {

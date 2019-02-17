@@ -1,4 +1,4 @@
-import neode from './neode.js'
+import { cleanDatabase } from './factories'
 
 (async () => {
   if (process.env.NODE_ENV === 'production') {
@@ -6,8 +6,7 @@ import neode from './neode.js'
   }
 
   try {
-    const deleteAll = 'MATCH (n) OPTIONAL MATCH (n)-[r]-() DELETE n,r;'
-    const response = await neode.cypher(deleteAll)
+    await cleanDatabase()
     /* eslint-disable-next-line no-console */
     console.log('Successfully deleted all nodes and relations!')
   } catch(err) {

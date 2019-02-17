@@ -1,19 +1,32 @@
 import neode from '../neode.js'
 import faker from 'faker'
+import bcrypt from 'bcryptjs'
+import slugify from 'slug'
 
 export default async (params = {}) => {
   const {
     name = faker.name.findName(),
     email = faker.internet.email(),
-    avatar = faker.internet.avatar()
+    password = '1234',
+    avatar = faker.internet.avatar(),
+    role = 'user',
+    disabled = false,
+    deleted = false
   } = params
+  const encryptedPassword = await bcrypt.hashSync(password, 10)
 
-  return neode.model('user').create({
+  const slug = slugify(name, {
+    lower: true
+  })
+
+  return neode.model('User').create({
     name,
+    slug,
+    role,
     email,
     avatar,
-    password: '1234',
-    disabled: false,
-    deleted: false
+    password: encryptedPassword,
+    disabled,
+    deleted
   })
 }

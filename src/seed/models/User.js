@@ -5,6 +5,7 @@ module.exports = {
     required: true
   },
   name: 'string',
+  slug: 'string',
   password: 'string',
   email: 'string',
   avatar: 'string',
