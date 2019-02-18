@@ -5,7 +5,10 @@ module.exports = {
     required: true
   },
   name: 'string',
-  slug: 'string',
+  slug: {
+    type: 'string',
+    unique: true,
+  },
   password: 'string',
   email: 'string',
   avatar: 'string',
