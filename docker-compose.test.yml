@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  neo4j:
+    volumes:
+      - neo4j-test-data:/data
+  backend:
+     build:
+      context: .
+      target: builder
+volumes:
+  neo4j-test-data:

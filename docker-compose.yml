@@ -27,11 +27,12 @@ services:
       context: neo4j
     networks:
       - hc-network
+    ports:
+      - "7474:7474"
     volumes:
       - neo4j-data:/data
     environment:
       - NEO4J_AUTH=none
-
 networks:
   hc-network:
     name: hc-network
