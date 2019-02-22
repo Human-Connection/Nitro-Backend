@@ -39,7 +39,7 @@ schema = applyScalars(applyDirectives(schema))
 
 const createServer = (options) => {
   const defaults = {
-    context: async ({request}) => {
+    context: async ({ request }) => {
       const authorizationHeader = request.headers.authorization || ''
       const user = await decode(driver, authorizationHeader)
       return {
