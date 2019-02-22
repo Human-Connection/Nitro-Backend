@@ -2,7 +2,7 @@
 import fs from 'fs'
 import path from 'path'
 import bcrypt from 'bcryptjs'
-import generateJwt from './jwt/generateToken'
+import encode from './jwt/encode'
 import uuid from 'uuid/v4'
 import { fixUrl } from './middleware/fixImageUrlsMiddleware'
 import { AuthenticationError } from 'apollo-server'
@@ -112,7 +112,7 @@ export const resolvers = {
             delete currentUser.password
             currentUser.avatar = fixUrl(currentUser.avatar)
             return Object.assign(currentUser, {
-              token: generateJwt(currentUser)
+              token: encode(currentUser)
             })
           } else throw new AuthenticationError('Incorrect email address or password.')
         })
