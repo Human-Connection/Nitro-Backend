@@ -1,5 +1,6 @@
 # Human-Connection - NITRO Backend
 [![Build Status](https://travis-ci.com/Human-Connection/Nitro-Backend.svg?branch=master)](https://travis-ci.com/Human-Connection/Nitro-Backend)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend?ref=badge_shield)
 
 > This Prototype tries to resolve the biggest hurdle of connecting
 > our services together. This is not possible in a sane way using
@@ -154,3 +155,7 @@ npm run test
 - [ ] check if upload is working (using graphql-yoga?)
 - [x] evaluate middleware 
 - [ ] ignore Posts and Comments by blacklisted Users
+
+
+## License
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FHuman-Connection%2FNitro-Backend?ref=badge_large)
