@@ -7,6 +7,7 @@ type Mutation {
   login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
   report(resource: Resource!, description: String): Report
+  reward(badgeID: ID!, userID: ID!): Reward
 }
 
 type Statistics {
@@ -201,6 +202,14 @@ enum BadgeTypeEnum {
 enum BadgeStatusEnum {
   permanent
   temporary
+}
+
+type Reward {
+  id: ID!
+  user: User @relation(name: "REWARDED", direction: "IN")
+  rewarderId: ID
+  createdAt: String
+  badge: Badge @relation(name: "REWARDED", direction: "OUT")
 }
 
 type Organization {
