@@ -52,8 +52,8 @@ describe('reward', () => {
   //   $to: ID!
   // ) {
   //   reward(
-  //     userId: $from,
-  //     badgeId: $to
+  //     badgeId: $from,
+  //     userId: $to
   //   ) { id, createdAt }
   // }
   // `
@@ -86,6 +86,13 @@ describe('reward', () => {
         client = new GraphQLClient(host, { headers })
       })
       it('creates a reward', async () => {
+        // const expected = {
+        //   AddUserBadges: {
+        //     from: {
+        //       id: 'b6'
+        //     }
+        //   }
+        // }
         const expected = {
           AddUserBadges: {
             from: {

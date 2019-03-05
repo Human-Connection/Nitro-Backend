@@ -7,7 +7,7 @@ type Mutation {
   login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
   report(resource: Resource!, description: String): Report
-  reward(badgeID: ID!, userID: ID!): Reward
+  reward(badgeId: ID!, userId: ID!): Reward
 }
 
 type Statistics {
