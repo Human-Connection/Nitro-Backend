@@ -7,11 +7,8 @@ import mocks from './mocks'
 import middleware from './middleware'
 import applyDirectives from './bootstrap/directives'
 import applyScalars from './bootstrap/scalars'
-import neo4j from './bootstrap/neo4j'
-
-import passport from 'passport'
-import jwtStrategy from './jwt/strategy'
-import jwt from 'jsonwebtoken'
+import { getDriver } from './bootstrap/neo4j'
+import decode from './jwt/decode'
 
 dotenv.config()
 // check env and warn
@@ -22,7 +19,7 @@ requiredEnvVars.forEach(env => {
   }
 })
 
-const driver = neo4j().getDriver()
+const driver = getDriver()
 const debug = process.env.NODE_ENV !== 'production' && process.env.DEBUG === 'true'
 
 let schema = makeAugmentedSchema({
@@ -42,20 +39,14 @@ schema = applyScalars(applyDirectives(schema))
 
 const createServer = (options) => {
   const defaults = {
-    context: async (req) => {
-      const payload = {
+    context: async ({ request }) => {
+      const authorizationHeader = request.headers.authorization || ''
+      const user = await decode(driver, authorizationHeader)
+      return {
         driver,
-        user: null,
-        req: req.request
+        user,
+        req: request
       }
-      try {
-        const token = payload.req.headers.authorization.replace('Bearer ', '')
-        payload.user = await jwt.verify(token, process.env.JWT_SECRET)
-      } catch (err) {
-        // nothing
-      }
-
-      return payload
     },
     schema: schema,
     debug: debug,
@@ -65,11 +56,7 @@ const createServer = (options) => {
   }
   const server = new GraphQLServer(Object.assign({}, defaults, options))
 
-  passport.use('jwt', jwtStrategy(driver))
-  server.express.use(passport.initialize())
   server.express.use(express.static('public'))
-
-  server.express.post('/graphql', passport.authenticate(['jwt'], { session: false }))
   return server
 }
 

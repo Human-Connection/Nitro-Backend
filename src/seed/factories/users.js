@@ -1,25 +1,30 @@
 import faker from 'faker'
+import uuid from 'uuid/v4'
 
-export default function (params) {
+export default function create (params) {
   const {
+    id = uuid(),
     name = faker.name.findName(),
     email = faker.internet.email(),
     password = '1234',
-    avatar = faker.internet.avatar()
+    role = 'user',
+    avatar = faker.internet.avatar(),
+    disabled = false,
+    deleted = false
   } = params
 
   return `
     mutation {
-      u1: CreateUser(
-        id: "u1",
+      CreateUser(
+        id: "${id}",
         name: "${name}",
         password: "${password}",
         email: "${email}",
         avatar: "${avatar}",
-        role: admin,
-        disabled: false,
-        deleted: false) {
-        id
+        role: ${role},
+        disabled: ${disabled},
+        deleted: ${deleted}
+      ) {
         name
         email
         avatar
