@@ -8,6 +8,8 @@ type Mutation {
   signup(email: String!, password: String!): Boolean!
   report(resource: Resource!, description: String): Report
   reward(badgeId: ID!, userId: ID!): Reward
+  disable(resource: Resource!): Boolean!
+  enable(resource: Resource!): Boolean!
 }
 
 type Statistics {
@@ -75,6 +77,7 @@ type User {
   avatar: String
   deleted: Boolean
   disabled: Boolean
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
   role: UserGroupEnum
 
   location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
@@ -134,6 +137,7 @@ type Post {
   visibility: VisibilityEnum
   deleted: Boolean
   disabled: Boolean
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
   createdAt: String
   updatedAt: String
 
@@ -163,6 +167,7 @@ type Comment {
   updatedAt: String
   deleted: Boolean
   disabled: Boolean
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
 }
 
 type Report {
