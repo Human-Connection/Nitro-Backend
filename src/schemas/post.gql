@@ -1,0 +1,43 @@
+enum VisibilityEnum {
+  public
+  friends
+  private
+}
+
+type Post {
+  id: ID!
+  author: User @relation(name: "WROTE", direction: "IN")
+  title: String!
+  slug: String
+  content: String!
+  contentExcerpt: String
+  image: String
+  visibility: VisibilityEnum
+  deleted: Boolean
+  disabled: Boolean
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
+  createdAt: String
+  updatedAt: String
+
+  relatedContributions: [Post]! @cypher(statement: """
+    MATCH (this)-[:TAGGED|CATEGORIZED]->(categoryOrTag)<-[:TAGGED|CATEGORIZED]-(post:Post)
+    WHERE (NOT exists(post.deleted) OR post.deleted = false)
+    AND (NOT exists(post.disabled) OR post.disabled = false)
+    RETURN DISTINCT post
+    LIMIT 10
+  """)
+}
+
+type User {
+  contributions: [Post]! @relation(name: "WROTE", direction: "OUT")
+  contributionsCount: Int! @cypher(statement: """
+    MATCH (this)-[:WROTE]->(r:Post)
+    WHERE (NOT exists(r.deleted) OR r.deleted = false)
+    AND (NOT exists(r.disabled) OR r.disabled = false)
+    RETURN COUNT(r)"""
+  )
+}
+
+type Comment {
+  post: Post @relation(name: "COMMENTS", direction: "OUT")
+}

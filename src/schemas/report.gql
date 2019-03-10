@@ -1,0 +1,25 @@
+type Mutation {
+  report(resource: Resource!, description: String): Report
+}
+
+enum ResourceEnum {
+  contribution
+  comment
+  user
+}
+
+input Resource {
+  id: ID!,
+  type: ResourceEnum!
+}
+
+type Report {
+  id: ID!
+  reporter: User @relation(name: "REPORTED", direction: "IN")
+  description: String
+  type: ResourceEnum!
+  createdAt: String
+  comment: Comment @relation(name: "REPORTED", direction: "OUT")
+  contribution: Post @relation(name: "REPORTED", direction: "OUT")
+  user: User @relation(name: "REPORTED", direction: "OUT")
+}

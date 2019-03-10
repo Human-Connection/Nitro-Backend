@@ -1,0 +1,21 @@
+type Comment {
+  id: ID!
+  author: User @relation(name: "WROTE", direction: "IN")
+  content: String!
+  contentExcerpt: String
+  createdAt: String
+  updatedAt: String
+  deleted: Boolean
+  disabled: Boolean
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
+}
+
+type User {
+  comments: [Comment]! @relation(name: "WROTE", direction: "OUT")
+  commentsCount: Int! @cypher(statement: "MATCH (this)-[:WROTE]->(r:Comment) WHERE NOT r.deleted = true RETURN COUNT(r)")
+}
+
+type Post {
+  comments: [Comment]! @relation(name: "COMMENTS", direction: "IN")
+  commentsCount: Int! @cypher(statement: "MATCH (this)<-[:COMMENTS]-(r:Comment) RETURN COUNT(r)")
+}

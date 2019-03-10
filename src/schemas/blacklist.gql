@@ -1,0 +1,3 @@
+type User {
+  blacklisted: [User]! @relation(name: "BLACKLISTED", direction: "OUT")
+}
