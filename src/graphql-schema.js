@@ -3,9 +3,9 @@ import statistics from './resolvers/statistics.js'
 import reports from './resolvers/reports.js'
 import posts from './resolvers/posts.js'
 import moderation from './resolvers/moderation.js'
-import schemas from './schemas'
+import types from './types'
 
-export const typeDefs = schemas
+export const typeDefs = types
 
 export const resolvers = {
   Query: {
