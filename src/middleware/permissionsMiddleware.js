@@ -56,7 +56,8 @@ const permissions = shield({
     CreateBadge: isAdmin,
     UpdateBadge: isAdmin,
     DeleteBadge: isAdmin,
-
+    addSocialMediaAccount: isAuthenticated,
+    
     enable: isModerator,
     disable: isModerator
     // addFruitToBasket: isAuthenticated

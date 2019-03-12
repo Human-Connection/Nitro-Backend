@@ -176,4 +176,34 @@ describe('login', () => {
       })
     })
   })
+
+  describe('addSocialMediaAccount', () => {
+    const mutation = (params) => {
+      const { url } = params
+      return `
+        mutation {
+          addSocialMediaAccount(url:"${url}")
+        }`
+    }
+    describe('unauthenticated', () => {
+      it('returns not authorised', async () => {
+        await expect(request(host, mutation({
+          url: 'https://freeradical.zone/@mattwr18'
+        }))).rejects.toMatch('Authorised!')
+      })
+    })
+    
+    describe('with valid JWT Bearer Token', () => {
+      let client
+      let headers
+      beforeEach(async () => {
+        headers = await login({ email: 'test@example.org', password: '1234' })
+        client = new GraphQLClient(host, { headers })
+      })
+              it('returns true', async () => {
+          await expect(client.request(query)).rejects.toMatch('Please enter a valid URL')
+        })
+      })
+    })
+  })
 })
