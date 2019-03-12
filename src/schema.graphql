@@ -1,3 +1,13 @@
+##########################################################
+#
+# ATTENTION! Please use the files inside src/types/
+#
+#            This document is only used for merging
+#            and will not be processed by the system!
+#            It will be removed soon.
+#
+##########################################################
+
 type Query {
   isLoggedIn: Boolean!
   "Get the currently logged in User based on the given JWT Token"
