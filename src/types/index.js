@@ -6,7 +6,7 @@ const loadSchema = file => {
   return fs.readFileSync(path.join(__dirname, file)).toString('utf-8')
 }
 
-let typeDefs = [loadSchema('../schema.gql')]
+let typeDefs = [loadSchema('../schema.graphql')]
 
 fs.readdirSync(__dirname).forEach(file => {
   if (file.split('.').pop() === 'gql') {
