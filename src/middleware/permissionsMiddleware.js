@@ -52,7 +52,6 @@ const permissions = shield({
     CreatePost: isAuthenticated,
     UpdatePost: isAuthor,
     DeletePost: isAuthor,
-    report: isAuthenticated,
     CreateBadge: isAdmin,
     UpdateBadge: isAdmin,
     DeleteBadge: isAdmin,
