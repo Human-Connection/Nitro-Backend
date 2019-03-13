@@ -68,9 +68,9 @@ type Statistics {
   countShouts: Int!
 }
 
-scalar Date
-scalar Time
-scalar DateTime
+# scalar Date
+# scalar Time
+# scalar DateTime
 
 enum VisibilityEnum {
   public
@@ -161,8 +161,8 @@ type User {
 
   categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
 
-  badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
-  badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
+  rewards: [Reward]! @cypher(statement: "MATCH (this)<-[r:REWARDED]-(:Badge) RETURN r")
+  rewardsCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(b:Badge) RETURN COUNT(b)")
 }
 
 type Post {
@@ -242,7 +242,7 @@ type Badge {
   status: BadgeStatusEnum!
   icon: String!
 
-  rewarded: [User]! @relation(name: "REWARDED", direction: "OUT")
+  rewarded: [Reward]! @cypher(statement: "MATCH (this)-[r:REWARDED]->(:User) RETURN r")
 }
 
 enum BadgeTypeEnum {
@@ -265,11 +265,10 @@ enum FollowTypeEnum {
 }
 
 type Reward {
-  id: ID!
-  user: User @relation(name: "REWARDED", direction: "IN")
-  rewarderId: ID
-  createdAt: String
-  badge: Badge @relation(name: "REWARDED", direction: "OUT")
+  from: Badge @cypher(statement: "MATCH (b:Badge)-[:REWARDED]->(:User) RETURN b")
+  to: User @cypher(statement: "MATCH (:Badge)-[:REWARDED]->(u:User) RETURN u")
+  rewardedBy: User
+  createdAt: DateTime
 }
 
 type Organization {

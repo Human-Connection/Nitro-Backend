@@ -2,6 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import userManagement from './resolvers/user_management.js'
 import statistics from './resolvers/statistics.js'
+import rewards from './resolvers/rewards.js'
 import reports from './resolvers/reports.js'
 import posts from './resolvers/posts.js'
 import moderation from './resolvers/moderation.js'
@@ -19,6 +20,7 @@ export const resolvers = {
   },
   Mutation: {
     ...userManagement.Mutation,
+    ...rewards.Mutation,
     ...reports.Mutation,
     ...moderation.Mutation,
     ...posts.Mutation

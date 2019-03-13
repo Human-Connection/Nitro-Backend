@@ -5,8 +5,8 @@ import express from 'express'
 import dotenv from 'dotenv'
 import mocks from './mocks'
 import middleware from './middleware'
-import applyDirectives from './bootstrap/directives'
-import applyScalars from './bootstrap/scalars'
+// import applyDirectives from './bootstrap/directives'
+// import applyScalars from './bootstrap/scalars'
 import { getDriver } from './bootstrap/neo4j'
 import decode from './jwt/decode'
 
@@ -27,15 +27,18 @@ let schema = makeAugmentedSchema({
   resolvers,
   config: {
     query: {
-      exclude: ['Statistics', 'LoggedInUser']
+      exclude: ['Statistics', 'LoggedInUser', '_RewardInput']
     },
     mutation: {
-      exclude: ['Statistics', 'LoggedInUser']
+      exclude: [
+        'Statistics',
+        'LoggedInUser'
+      ]
     },
     debug: debug
   }
 })
-schema = applyScalars(applyDirectives(schema))
+// schema = applyScalars(applyDirectives(schema))
 
 const createServer = (options) => {
   const defaults = {
