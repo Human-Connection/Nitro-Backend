@@ -41,7 +41,6 @@ export default {
         discordBot.user.setAFK(true)
       })
       discordBot.login(process.env.DISCORD_TOKEN)
-      //throw new Exception()
 
       return result
     }
