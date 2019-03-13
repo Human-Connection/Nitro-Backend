@@ -34,6 +34,7 @@
     ]
   },
   "dependencies": {
+    "@discordjs/uws": "^11.149.1",
     "apollo-cache-inmemory": "~1.5.1",
     "apollo-client": "~2.5.1",
     "apollo-link-http": "~1.5.12",
@@ -42,7 +43,9 @@
     "cheerio": "~1.0.0-rc.2",
     "cross-env": "~5.2.0",
     "date-fns": "2.0.0-alpha.27",
+    "discord.js": "^11.4.2",
     "dotenv": "~6.2.0",
+    "erlpack": "github:discordapp/erlpack",
     "faker": "~4.1.0",
     "graphql": "~14.1.1",
     "graphql-custom-directives": "~0.2.14",
@@ -52,17 +55,20 @@
     "graphql-tag": "~2.10.1",
     "graphql-yoga": "~1.17.4",
     "jsonwebtoken": "~8.5.0",
+    "libsodium-wrappers": "^0.7.4",
     "linkifyjs": "~2.1.8",
     "lodash": "~4.17.11",
     "ms": "~2.1.1",
     "neo4j-driver": "~1.7.3",
     "neo4j-graphql-js": "~2.4.2",
     "node-fetch": "~2.3.0",
+    "node-opus": "^0.3.1",
     "npm-run-all": "~4.1.5",
     "sanitize-html": "~1.20.0",
     "slug": "~1.0.0",
     "trunc-html": "~1.1.2",
-    "wait-on": "~3.2.0"
+    "wait-on": "~3.2.0",
+    "zlib-sync": "^0.1.4"
   },
   "devDependencies": {
     "@babel/cli": "~7.2.3",
