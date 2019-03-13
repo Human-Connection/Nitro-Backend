@@ -31,6 +31,7 @@ type Mutation {
   "Get a JWT Token for the given Email and password"
   login(email: String!, password: String!): String!
   signup(email: String!, password: String!): Boolean!
+  changePassword(oldPassword:String!, newPassword: String!): String!
   report(id: ID!, description: String): Report
   disable(id: ID!): ID
   enable(id: ID!): ID
@@ -157,7 +158,7 @@ type User {
   )
 
   comments: [Comment]! @relation(name: "WROTE", direction: "OUT")
-  commentsCount: Int! @cypher(statement: "MATCH (this)-[:WROTE]->(r:Comment) WHERE NOT r.deleted = true RETURN COUNT(r)")
+  commentsCount: Int! @cypher(statement: "MATCH (this)-[:WROTE]->(r:Comment) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(r)")
 
   shouted: [Post]! @relation(name: "SHOUTED", direction: "OUT")
   shoutedCount: Int! @cypher(statement: "MATCH (this)-[:SHOUTED]->(r:Post) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)")
@@ -198,7 +199,7 @@ type Post {
   categories: [Category]! @relation(name: "CATEGORIZED", direction: "OUT")
 
   comments: [Comment]! @relation(name: "COMMENTS", direction: "IN")
-  commentsCount: Int! @cypher(statement: "MATCH (this)<-[:COMMENTS]-(r:Comment) RETURN COUNT(r)")
+  commentsCount: Int! @cypher(statement: "MATCH (this)<-[:COMMENTS]-(r:Comment) WHERE NOT r.deleted = true AND NOT r.disabled = true  RETURN COUNT(r)")
 
   shoutedBy: [User]! @relation(name: "SHOUTED", direction: "IN")
   shoutedCount: Int! @cypher(statement: "MATCH (this)<-[:SHOUTED]-(r:User) WHERE NOT r.deleted = true AND NOT r.disabled = true RETURN COUNT(DISTINCT r)")
