@@ -58,6 +58,7 @@ describe('rewards', () => {
       }
     }
     `
+
     // const mutation = `
     // mutation(
     //   $from: ID!
@@ -151,14 +152,25 @@ describe('rewards', () => {
           client.request(mutation, variables)
         ).resolves.toEqual(expected)
       })
-      it('fails to reward the first reward a second time', async () => {
+      it('returns the original reward if a reward is attempted a second time', async () => {
         const variables = {
           from: 'b6',
           to: 'u1'
         }
+        const query = `{
+          User( id: "u1" ) {
+            badgesCount
+          }
+        }
+        `
+        const expected = { User: [{ badgesCount: 1 }] }
+
+        await client.request(mutation, variables)
+        await client.request(mutation, variables)
+
         await expect(
-          client.request(mutation, variables)
-        ).rejects.toThrow('Not Authorised')
+          client.request(query)
+        ).resolves.toEqual(expected)
       })
     })
 
