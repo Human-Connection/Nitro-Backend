@@ -60,9 +60,13 @@ const permissions = shield({
     AddBadgeRewarded: isAdmin,
     RemoveBadgeRewarded: isAdmin,
     // reward: isAdmin
+    follow: isAuthenticated,
+    unfollow: isAuthenticated,
+    shout: isAuthenticated,
+    unshout: isAuthenticated,
+    changePassword: isAuthenticated,
     enable: isModerator,
     disable: isModerator
-    // addFruitToBasket: isAuthenticated
     // CreateUser: allow,
   },
   User: {
