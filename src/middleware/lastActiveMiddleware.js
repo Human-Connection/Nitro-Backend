@@ -1,4 +1,4 @@
-async function setActiveTime (context) {
+async function setLastActiveAt (context) {
   if (!context.user) return
   const session = context.driver.session()
   await session.run(`
@@ -12,11 +12,11 @@ async function setActiveTime (context) {
 
 export default {
   Mutation: async (resolve, root, args, context, info) => {
-    setActiveTime(context)
+    setLastActiveAt(context)
     return resolve(root, args, context, info)
   },
   Query: async (resolve, root, args, context, info) => {
-    setActiveTime(context)
+    setLastActiveAt(context)
     return resolve(root, args, context, info)
   }
 }
