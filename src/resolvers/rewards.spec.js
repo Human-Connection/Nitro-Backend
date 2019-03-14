@@ -1,7 +1,6 @@
 import Factory from '../seed/factories'
 import { GraphQLClient } from 'graphql-request'
 import { host, login } from '../jest/helpers'
-// import { host } from '../jest/helpers'
 
 const factory = Factory()
 
@@ -37,16 +36,6 @@ describe('rewards', () => {
   })
 
   describe('RewardBadge', () => {
-    // const mutation = `
-    // mutation(
-    //   $from: ID!
-    //   $to: ID!
-    // ) {
-    //   AddUserBadges(from: {id: $from}, to: {id: $to}) {
-    //     from { id }
-    //   }
-    // }
-    // `
     const mutation = `
     mutation(
       $from: ID!
@@ -58,18 +47,6 @@ describe('rewards', () => {
       }
     }
     `
-
-    // const mutation = `
-    // mutation(
-    //   $from: ID!
-    //   $to: ID!
-    // ) {
-    //   reward(
-    //     badgeId: $from,
-    //     userId: $to
-    //   ) { id, createdAt }
-    // }
-    // `
 
     describe('unauthenticated', () => {
       const variables = {
@@ -98,13 +75,6 @@ describe('rewards', () => {
           from: 'b6',
           to: 'u1'
         }
-        // const expected = {
-        //   AddUserBadges: {
-        //     from: {
-        //       id: 'b6'
-        //     }
-        //   }
-        // }
         const expected = {
           AddBadgeRewarded: {
             from: {
@@ -131,13 +101,6 @@ describe('rewards', () => {
           from: 'b1',
           to: 'u1'
         }
-        // const expected = {
-        //   AddUserBadges: {
-        //     from: {
-        //       id: 'b1'
-        //     }
-        //   }
-        // }
         const expected = {
           AddBadgeRewarded: {
             from: {
