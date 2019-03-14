@@ -62,7 +62,6 @@
     "neo4j-driver": "~1.7.3",
     "neo4j-graphql-js": "~2.4.2",
     "node-fetch": "~2.3.0",
-    "node-ogg": "github:TooTallNate/node-ogg-packet",
     "node-opus": "^0.3.1",
     "npm-run-all": "~4.1.5",
     "sanitize-html": "~1.20.0",
