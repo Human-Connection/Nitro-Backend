@@ -41,6 +41,11 @@ const isAuthor = rule({ cache: 'no_cache' })(async (parent, args, { user, driver
   return authorId === user.id
 })
 
+const wantsToShowOnlineStatus = rule({ cache: 'no_cache' })(async (parent, args, { user, driver }) => {
+  const preferences = parent.preferences || []
+  return preferences.indexOf('hideOnlineStatus') < 0
+})
+
 // Permissions
 const permissions = shield({
   Query: {
@@ -68,7 +73,9 @@ const permissions = shield({
   },
   User: {
     email: isMyOwn,
-    password: isMyOwn
+    password: isMyOwn,
+    preferences: isMyOwn,
+    lastActiveAt: or(wantsToShowOnlineStatus, isModerator)
   }
 })
 

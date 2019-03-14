@@ -121,6 +121,9 @@ type User {
   "Date of last interaction with the system"
   lastActiveAt: String
 
+  "User preferences like 'hideOnlineStatus'"
+  preferences: [UserPreferenceEnum]
+
   friends: [User]! @relation(name: "FRIENDS", direction: "BOTH")
   friendsCount: Int! @cypher(statement: "MATCH (this)<-[:FRIENDS]->(r:User) RETURN COUNT(DISTINCT r)")
 
@@ -164,6 +167,10 @@ type User {
 
   badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
   badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
+}
+
+enum UserPreferenceEnum {
+  hideOnlineStatus
 }
 
 type Post {
