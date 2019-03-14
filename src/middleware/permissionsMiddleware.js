@@ -74,7 +74,7 @@ const permissions = shield({
   User: {
     email: isMyOwn,
     password: isMyOwn,
-    preferences: isMyOwn,
+    preferences: or(isMyOwn, isAdmin),
     lastActiveAt: or(wantsToShowOnlineStatus, isModerator)
   }
 })
