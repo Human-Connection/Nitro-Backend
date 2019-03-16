@@ -36,14 +36,24 @@ describe('rewards', () => {
   })
 
   describe('RewardBadge', () => {
+    // const mutation = `
+    // mutation(
+    //   $from: ID!
+    //   $to: ID!
+    // ) {
+    //   AddBadgeRewarded(from: {id: $from}, to: {id: $to}) {
+    //     from { id }
+    //     to { id }
+    //   }
+    // }
+    // `
     const mutation = `
     mutation(
       $from: ID!
       $to: ID!
     ) {
-      AddBadgeRewarded(from: {id: $from}, to: {id: $to}) {
-        from { id }
-        to { id }
+      reward(fromBadgeId: $from, toUserId: $to) {
+        id
       }
     }
     `
@@ -75,14 +85,19 @@ describe('rewards', () => {
           from: 'b6',
           to: 'u1'
         }
+        // const expected = {
+        //   AddBadgeRewarded: {
+        //     from: {
+        //       id: 'b6'
+        //     },
+        //     to: {
+        //       id: 'u1'
+        //     }
+        //   }
+        // }
         const expected = {
-          AddBadgeRewarded: {
-            from: {
-              id: 'b6'
-            },
-            to: {
-              id: 'u1'
-            }
+          badge: {
+            id: 'b6'
           }
         }
         await expect(
