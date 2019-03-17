@@ -36,17 +36,6 @@ describe('rewards', () => {
   })
 
   describe('RewardBadge', () => {
-    // const mutation = `
-    // mutation(
-    //   $from: ID!
-    //   $to: ID!
-    // ) {
-    //   AddBadgeRewarded(from: {id: $from}, to: {id: $to}) {
-    //     from { id }
-    //     to { id }
-    //   }
-    // }
-    // `
     const mutation = `
       mutation(
         $from: ID!
@@ -83,21 +72,6 @@ describe('rewards', () => {
           from: 'b6',
           to: 'u1'
         }
-        // const expected = {
-        //   AddBadgeRewarded: {
-        //     from: {
-        //       id: 'b6'
-        //     },
-        //     to: {
-        //       id: 'u1'
-        //     }
-        //   }
-        // }
-        // const expected = {
-        //   badge: {
-        //     id: 'b6'
-        //   }
-        // }
         const expected = {
           reward: 'u1'
         }
@@ -117,16 +91,6 @@ describe('rewards', () => {
           from: 'b1',
           to: 'u1'
         }
-        // const expected = {
-        //   AddBadgeRewarded: {
-        //     from: {
-        //       id: 'b1'
-        //     },
-        //     to: {
-        //       id: 'u1'
-        //     }
-        //   }
-        // }
         const expected = {
           reward: 'u1'
         }
@@ -204,14 +168,7 @@ describe('rewards', () => {
       to: 'u1'
     }
     const expected = {
-      RemoveBadgeRewarded: {
-        from: {
-          id: 'b6'
-        },
-        to: {
-          id: 'u1'
-        }
-      }
+      unreward: 'u1'
     }
 
     const mutation = `
@@ -219,12 +176,9 @@ describe('rewards', () => {
         $from: ID!
         $to: ID!
       ) {
-        RemoveBadgeRewarded(from: {id: $from}, to: {id: $to}) {
-          from { id }
-          to { id }
-        }
+        unreward(fromBadgeId: $from, toUserId: $to)
       }
-      `
+    `
 
     describe('unauthenticated', () => {
       let client
@@ -250,12 +204,14 @@ describe('rewards', () => {
         ).resolves.toEqual(expected)
       })
       it('fails to remove a not existing badge from user', async () => {
+        await client.request(mutation, variables)
+
+        const expected = {
+          unreward: null
+        }
         await expect(
           client.request(mutation, variables)
         ).resolves.toEqual(expected)
-        await expect(
-          client.request(mutation, variables)
-        ).rejects.toThrow('Not Authorised')
       })
     })
 
