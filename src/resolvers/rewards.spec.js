@@ -48,14 +48,12 @@ describe('rewards', () => {
     // }
     // `
     const mutation = `
-    mutation(
-      $from: ID!
-      $to: ID!
-    ) {
-      reward(fromBadgeId: $from, toUserId: $to) {
-        id
+      mutation(
+        $from: ID!
+        $to: ID!
+      ) {
+        reward(fromBadgeId: $from, toUserId: $to)
       }
-    }
     `
 
     describe('unauthenticated', () => {
@@ -95,16 +93,19 @@ describe('rewards', () => {
         //     }
         //   }
         // }
+        // const expected = {
+        //   badge: {
+        //     id: 'b6'
+        //   }
+        // }
         const expected = {
-          badge: {
-            id: 'b6'
-          }
+          reward: 'u1'
         }
         await expect(
           client.request(mutation, variables)
         ).resolves.toEqual(expected)
       })
-      it('rewards a second different reward to same user', async () => {
+      it('rewards a second different badge to same user', async () => {
         await factory.create('Badge', {
           id: 'b1',
           key: 'indiegogo_en_racoon',
@@ -116,18 +117,39 @@ describe('rewards', () => {
           from: 'b1',
           to: 'u1'
         }
+        // const expected = {
+        //   AddBadgeRewarded: {
+        //     from: {
+        //       id: 'b1'
+        //     },
+        //     to: {
+        //       id: 'u1'
+        //     }
+        //   }
+        // }
         const expected = {
-          AddBadgeRewarded: {
-            from: {
-              id: 'b1'
-            },
-            to: {
-              id: 'u1'
-            }
-          }
+          reward: 'u1'
         }
         await expect(
           client.request(mutation, variables)
+        ).resolves.toEqual(expected)
+      })
+      it('rewards the same badge as well to another user', async () => {
+        const variables1 = {
+          from: 'b6',
+          to: 'u1'
+        }
+        await client.request(mutation, variables1)
+
+        const variables2 = {
+          from: 'b6',
+          to: 'u2'
+        }
+        const expected = {
+          reward: 'u2'
+        }
+        await expect(
+          client.request(mutation, variables2)
         ).resolves.toEqual(expected)
       })
       it('returns the original reward if a reward is attempted a second time', async () => {
@@ -135,6 +157,9 @@ describe('rewards', () => {
           from: 'b6',
           to: 'u1'
         }
+        await client.request(mutation, variables)
+        await client.request(mutation, variables)
+
         const query = `{
           User( id: "u1" ) {
             badgesCount
@@ -142,9 +167,6 @@ describe('rewards', () => {
         }
         `
         const expected = { User: [{ badgesCount: 1 }] }
-
-        await client.request(mutation, variables)
-        await client.request(mutation, variables)
 
         await expect(
           client.request(query)
