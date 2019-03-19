@@ -1,0 +1,37 @@
+
+enum FollowTypeEnum {
+  User
+  Organization
+  Project
+}
+
+type Mutation {
+  "Follow the given Type and ID"
+  follow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
+    MATCH (n {id: $id}), (u:User {id: $cypherParams.currentUserId})
+    WHERE $type IN labels(n) AND NOT $id = $cypherParams.currentUserId
+    MERGE (u)-[r:FOLLOWS]->(n)
+    RETURN COUNT(r) > 0
+  """)
+  "Unfollow the given Type and ID"
+  unfollow(id: ID!, type: FollowTypeEnum): Boolean! @cypher(statement: """
+    MATCH (:User {id: $cypherParams.currentUserId})-[r:FOLLOWS]->(n {id: $id})
+    WHERE $type IN labels(n)
+    DELETE r
+    RETURN COUNT(r) > 0
+  """)
+}
+
+type User {
+  following: [User]! @relation(name: "FOLLOWS", direction: "OUT")
+  followingCount: Int! @cypher(statement: "MATCH (this)-[:FOLLOWS]->(r:User) RETURN COUNT(DISTINCT r)")
+
+  followedBy: [User]! @relation(name: "FOLLOWS", direction: "IN")
+  followedByCount: Int! @cypher(statement: "MATCH (this)<-[:FOLLOWS]-(r:User) RETURN COUNT(DISTINCT r)")
+
+  "Is the currently logged in user following that user?"
+  followedByCurrentUser: Boolean! @cypher(statement: """
+    MATCH (this)<-[:FOLLOWS]-(u:User {id: $cypherParams.currentUserId})
+    RETURN COUNT(u) >= 1
+  """)
+}

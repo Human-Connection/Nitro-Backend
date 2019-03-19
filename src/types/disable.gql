@@ -1,0 +1,4 @@
+type Mutation {
+  disable(id: ID!): ID
+  enable(id: ID!): ID
+}

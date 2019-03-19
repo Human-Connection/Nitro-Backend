@@ -1,0 +1,44 @@
+type Query {
+  "Check if the current user is logged in"
+  isLoggedIn: Boolean!
+
+  "Get the currently logged in User based on the given JWT Token"
+  currentUser: User
+}
+type Mutation {
+  "Get a JWT Token for the given Email and password"
+  login(email: String!, password: String!): String!
+  signup(email: String!, password: String!): Boolean!
+}
+
+enum UserGroupEnum {
+  admin
+  moderator
+  user
+}
+
+type User {
+  id: ID!
+  name: String
+  email: String
+  slug: String
+  password: String!
+  avatar: String
+  deleted: Boolean
+  disabled: Boolean
+  disabledBy: User @relation(name: "DISABLED", direction: "IN")
+  role: UserGroupEnum
+
+  location: Location @cypher(statement: "MATCH (this)-[:IS_IN]->(l:Location) RETURN l")
+  locationName: String
+  about: String
+
+  createdAt: String
+  updatedAt: String
+}
+
+enum UserGroupEnum {
+  admin
+  moderator
+  user
+}

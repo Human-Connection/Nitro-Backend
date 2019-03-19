@@ -1,0 +1,23 @@
+enum BadgeTypeEnum {
+  role
+  crowdfunding
+}
+enum BadgeStatusEnum {
+  permanent
+  temporary
+}
+
+type Badge {
+  id: ID!
+  key: String!
+  type: BadgeTypeEnum!
+  status: BadgeStatusEnum!
+  icon: String!
+
+  rewarded: [User]! @relation(name: "REWARDED", direction: "OUT")
+}
+
+type User {
+  badges: [Badge]! @relation(name: "REWARDED", direction: "IN")
+  badgesCount: Int! @cypher(statement: "MATCH (this)<-[:REWARDED]-(r:Badge) RETURN COUNT(r)")
+}
