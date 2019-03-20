@@ -203,15 +203,13 @@ describe('rewards', () => {
           client.request(mutation, variables)
         ).resolves.toEqual(expected)
       })
+
       it('fails to remove a not existing badge from user', async () => {
         await client.request(mutation, variables)
 
-        const expected = {
-          unreward: null
-        }
         await expect(
           client.request(mutation, variables)
-        ).resolves.toEqual(expected)
+        ).rejects.toThrow('Cannot read property \'id\' of undefined')
       })
     })
 
