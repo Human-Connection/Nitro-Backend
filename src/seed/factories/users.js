@@ -1,5 +1,13 @@
 import faker from 'faker'
 import uuid from 'uuid/v4'
+import helpers from '../seed-helpers'
+
+// random preferences, chance 1 to 3
+const preferences = [
+  'null',
+  '[hideOnlineStatus]',
+  'null'
+]
 
 export default function create (params) {
   const {
@@ -25,7 +33,8 @@ export default function create (params) {
         about: "${about}",
         role: ${role},
         disabled: ${disabled},
-        deleted: ${deleted}
+        deleted: ${deleted},
+        preferences: ${helpers.random(preferences)}
       ) {
         id
         name
