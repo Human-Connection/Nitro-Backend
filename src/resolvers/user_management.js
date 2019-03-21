@@ -56,8 +56,9 @@ export default {
             )
         })
     },
-    addSocialMediaAccount: async (_, { url }, { driver, user }) => {
+    addSocialMedia: async (_, { url }, { driver, user }) => {
       const session = driver.session()
+
       const { email } = user
       const result = await session.run(
         `MATCH (user:User {email: $userEmail})

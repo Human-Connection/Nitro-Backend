@@ -12,7 +12,7 @@ type Mutation {
   report(id: ID!, description: String): Report
   disable(id: ID!): ID
   enable(id: ID!): ID
-  addSocialMediaAccount(url: String!): Boolean!
+  addSocialMedia(url: String!): Boolean!
   "Shout the given Type and ID"
   shout(id: ID!, type: ShoutTypeEnum): Boolean! @cypher(statement: """
     MATCH (n {id: $id})<-[:WROTE]-(wu:User), (u:User {id: $cypherParams.currentUserId})
