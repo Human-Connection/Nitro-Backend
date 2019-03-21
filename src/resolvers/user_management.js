@@ -30,31 +30,76 @@ export default {
       //   throw new Error('Already logged in.')
       // }
       const session = driver.session()
-      return session
-        .run(
-          "MATCH (user:User {email: $userEmail}) " +
-            "RETURN user {.id, .slug, .name, .avatar, .email, .password, .role} as user LIMIT 1",
+      const result = await session.run(
+        'MATCH (user:User {email: $userEmail}) ' +
+          'RETURN user {.id, .slug, .name, .avatar, .email, .password, .role, .disabled} as user LIMIT 1',
+        {
+          userEmail: email
+        }
+      )
+
+      session.close()
+      const [currentUser] = await result.records.map(function (record) {
+        return record.get('user')
+      })
+
+      if (
+        currentUser &&
+        (await bcrypt.compareSync(password, currentUser.password)) &&
+        !currentUser.disabled
+      ) {
+        delete currentUser.password
+        return encode(currentUser)
+      } else if (currentUser &&
+        currentUser.disabled
+      ) {
+        throw new AuthenticationError('Your account has been disabled.')
+      } else {
+        throw new AuthenticationError('Incorrect email address or password.')
+      }
+    },
+    changePassword: async (
+      _,
+      { oldPassword, newPassword },
+      { driver, user }
+    ) => {
+      const session = driver.session()
+      let result = await session.run(
+        `MATCH (user:User {email: $userEmail}) 
+         RETURN user {.id, .email, .password}`,
+        {
+          userEmail: user.email
+        }
+      )
+
+      const [currentUser] = result.records.map(function (record) {
+        return record.get('user')
+      })
+
+      if (!(await bcrypt.compareSync(oldPassword, currentUser.password))) {
+        throw new AuthenticationError('Old password is not correct')
+      }
+
+      if (await bcrypt.compareSync(newPassword, currentUser.password)) {
+        throw new AuthenticationError(
+          'Old password and new password should be different'
+        )
+      } else {
+        const newHashedPassword = await bcrypt.hashSync(newPassword, 10)
+        session.run(
+          `MATCH (user:User {email: $userEmail})
+           SET user.password = $newHashedPassword
+           RETURN user
+        `,
           {
-            userEmail: email
+            userEmail: user.email,
+            newHashedPassword
           }
         )
-        .then(async result => {
-          session.close()
-          const [currentUser] = await result.records.map(function(record) {
-            return record.get("user")
-          })
+        session.close()
 
-          if (
-            currentUser &&
-            (await bcrypt.compareSync(password, currentUser.password))
-          ) {
-            delete currentUser.password
-            return encode(currentUser)
-          } else
-            throw new AuthenticationError(
-              "Incorrect email address or password."
-            )
-        })
+        return encode(currentUser)
+      }
     },
     addSocialMedia: async (_, { url }, { driver, user }) => {
       const session = driver.session()
@@ -62,7 +107,7 @@ export default {
       const { email } = user
       const result = await session.run(
         `MATCH (user:User {email: $userEmail})
-         SET user.socialMedia = $url
+         SET user.socialMedia = [$url]
          RETURN user {.socialMedia}`,
         {
           userEmail: email,

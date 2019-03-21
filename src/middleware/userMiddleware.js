@@ -1,4 +1,7 @@
 import createOrUpdateLocations from './nodes/locations'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 export default {
   Mutation: {

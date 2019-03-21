@@ -12,7 +12,8 @@ export default {
         'RETURN author', {
           userId: context.user.id,
           postId: result.id
-        })
+        }
+      )
       session.close()
 
       return result
