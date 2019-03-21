@@ -1,7 +1,7 @@
-import encode from '../jwt/encode'
-import bcrypt from 'bcryptjs'
-import { AuthenticationError } from 'apollo-server'
-import { neo4jgraphql } from 'neo4j-graphql-js'
+import encode from "../jwt/encode"
+import bcrypt from "bcryptjs"
+import { AuthenticationError } from "apollo-server"
+import { neo4jgraphql } from "neo4j-graphql-js"
 
 export default {
   Query: {
@@ -25,7 +25,7 @@ export default {
 
       return true
     },
-    login: async (parent, { email, password }, { driver, req, user }) => {
+    login: async (_, { email, password }, { driver, req, user }) => {
       // if (user && user.id) {
       //   throw new Error('Already logged in.')
       // }
@@ -100,6 +100,25 @@ export default {
 
         return encode(currentUser)
       }
+    },
+    addSocialMedia: async (_, { url }, { driver, user }) => {
+      const session = driver.session()
+
+      const { email } = user
+      const result = await session.run(
+        `MATCH (user:User {email: $userEmail})
+         SET user.socialMedia = [$url]
+         RETURN user {.socialMedia}`,
+        {
+          userEmail: email,
+          url
+        }
+      )
+      session.close()
+      const [currentUser] = result.records.map(record => {
+        return record.get("user")
+      })
+      return !!currentUser.socialMedia
     }
   }
 }

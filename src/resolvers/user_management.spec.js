@@ -1,9 +1,9 @@
-import Factory from '../seed/factories'
-import { GraphQLClient, request } from 'graphql-request'
-import jwt from 'jsonwebtoken'
-import { host, login } from '../jest/helpers'
+import Factory from "../seed/factories";
+import { GraphQLClient, request } from "graphql-request";
+import jwt from "jsonwebtoken";
+import { host, login } from "../jest/helpers";
 
-const factory = Factory()
+const factory = Factory();
 
 // here is the decoded JWT token:
 // {
@@ -117,37 +117,37 @@ describe('currentUser', () => {
       email
       role
     }
-  }`
+  }`;
 
-  describe('unauthenticated', () => {
-    it('returns null', async () => {
-      const expected = { currentUser: null }
-      await expect(request(host, query)).resolves.toEqual(expected)
-    })
-  })
+  describe("unauthenticated", () => {
+    it("returns null", async () => {
+      const expected = { currentUser: null };
+      await expect(request(host, query)).resolves.toEqual(expected);
+    });
+  });
 
-  describe('with valid JWT Bearer Token', () => {
-    let client
-    let headers
+  describe("with valid JWT Bearer Token", () => {
+    let client;
+    let headers;
 
-    describe('but no corresponding user in the database', () => {
+    describe("but no corresponding user in the database", () => {
       beforeEach(async () => {
-        client = new GraphQLClient(host, { headers: jennyRostocksHeaders })
-      })
+        client = new GraphQLClient(host, { headers: jennyRostocksHeaders });
+      });
 
-      it('returns null', async () => {
-        const expected = { currentUser: null }
-        await expect(client.request(query)).resolves.toEqual(expected)
-      })
-    })
+      it("returns null", async () => {
+        const expected = { currentUser: null };
+        await expect(client.request(query)).resolves.toEqual(expected);
+      });
+    });
 
-    describe('and corresponding user in the database', () => {
+    describe("and corresponding user in the database", () => {
       beforeEach(async () => {
-        headers = await login({ email: 'test@example.org', password: '1234' })
-        client = new GraphQLClient(host, { headers })
-      })
+        headers = await login({ email: "test@example.org", password: "1234" });
+        client = new GraphQLClient(host, { headers });
+      });
 
-      it('returns the whole user object', async () => {
+      it("returns the whole user object", async () => {
         const expected = {
           currentUser: {
             avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/jimmuirhead/128.jpg',
@@ -185,11 +185,11 @@ describe('login', () => {
         )
         const token = data.login
         jwt.verify(token, process.env.JWT_SECRET, (err, data) => {
-          expect(data.email).toEqual('test@example.org')
-          expect(err).toBeNull()
-        })
-      })
-    })
+          expect(data.email).toEqual("test@example.org");
+          expect(err).toBeNull();
+        });
+      });
+    });
 
     describe('valid email/password but user is disabled', () => {
       it('responds with "Your account has been disabled."', async () => {
